@@ -32,7 +32,7 @@ const PeopleSchema = new mongoose.Schema({
     name: String,
     image: String,
     title: String,
-});
+}, {timestamps: true});
 
 const People = mongoose.model("People", PeopleSchema)
 
@@ -55,6 +55,8 @@ app.get("/", (req, res) => {
 app.get("/people", async (req, res) => {
     try {
     // send all people
+    // const people = awaut People.Find({});
+    // res.json(people);
     res.json(await People.find({}));
     } catch (error) {
     //send error
@@ -62,10 +64,36 @@ app.get("/people", async (req, res) => {
     }
 });
 
+// PEOPLE DELETE ROUTE
+app.delete("/people/:id", async (req, res) => {
+    try {
+      // send all people
+      res.json(await People.findByIdAndDelete(req.params.id));
+    } catch (error) {
+      //send error
+      res.status(400).json(error);
+    }
+  });
+
+// PEOPLE UPDATE ROUTE
+app.put("/people/:id", async (req, res) => {
+    try {
+      // send all people
+      res.json(
+        await People.findByIdAndUpdate(req.params.id, req.body, { new: true })
+      );
+    } catch (error) {
+      //send error
+      res.status(400).json(error);
+    }
+});
+
 // PEOPLE CREATE ROUTE
 app.post("/people", async (req, res) => {
     try {
     // send all people
+    // const people = await People.create(req.body);
+    // res.json(people);
     res.json(await People.create(req.body));
     } catch (error) {
     //send error
